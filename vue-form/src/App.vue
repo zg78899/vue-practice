@@ -3,16 +3,21 @@
     <form v-on:submit.prevent="submitForm">
       <div>
         <label for="username">ID: </label>
-        <input id="username" type="text" v-model="username">
+        <input class="username-input"
+        v-bind:class="{'error':isError}" 
+        id="username"
+         type="text"
+          v-model="username">
       </div>
       <div>
         <label for="password">PASSWORD: </label>
         <input id="password" type="password" v-model="password">
       </div>
-      <button type="submit">로그인</button>
+      <button v-bind:disabled="!isUsernameValid" type="submit">로그인</button>
     </form>
     <!-- v-if="true"이면 보이고 false이면 보이지 않게 된다. -->
     <p v-if="isError">올바르지 않은 아이디 입니다.</p>
+    <p v-if="isUsernameValid">올바른 이메일 형식이 입니다.</p>
   </div>
 </template>
 <script>
@@ -29,7 +34,9 @@ export default {
      isError:false
    };
  },
+// computed는 데이터가 변화되면 자동으로 불리는 함수 
  computed:{
+   //글자를 하나하나 칠때 마다 validation검사, 이메일 조건일 때 isError = true 
    isUsernameValid(){
     return validateEmail(this.username);
    }
@@ -49,7 +56,14 @@ export default {
  }
 }
 </script>
+<style scoped>
 
-<style>
+.username-input{
+  outline: none;
+}
+.username-input.error{
+  border:1px solid red;
+}
+
 
 </style>
